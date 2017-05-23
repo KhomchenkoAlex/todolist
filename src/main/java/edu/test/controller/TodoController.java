@@ -50,32 +50,51 @@ public class TodoController {
 
     @GetMapping("/todolist")
     public String getTasks(Model model) {
-        User user = userService.getCurrentUser();
-        List<Task> result = taskRepository.findByUserId(user.getId());
-        model.addAttribute("inProgress", taskService.getTaskAmountByStatus(user.getId(), Status.IN_PROGRESS));
-        model.addAttribute("done", taskService.getTaskAmountByStatus(user.getId(), Status.COMPLETE));
-        model.addAttribute("user", user.getUsername());
-        model.addAttribute("tasks", result);
-        model.addAttribute("taskDto", new TaskDto());
-        model.addAttribute("total", result.size());
+        try {
+            User user = userService.getCurrentUser();
+            List<Task> result = taskRepository.findByUserId(user.getId());
+            model.addAttribute("inProgress", taskService.getTaskAmountByStatus(user.getId(), Status.IN_PROGRESS));
+            model.addAttribute("done", taskService.getTaskAmountByStatus(user.getId(), Status.COMPLETE));
+            model.addAttribute("user", user.getUsername());
+            model.addAttribute("tasks", result);
+            model.addAttribute("taskDto", new TaskDto());
+            model.addAttribute("total", result.size());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
         return "todolist";
     }
 
     @PostMapping("/addTask")
     public String addTask(@ModelAttribute("taskDto") TaskDto taskDto) {
-        taskService.addNewTask(taskDto);
+        try {
+            taskService.addNewTask(taskDto);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        log.info("Task %s added.", taskDto.getTaskName());
         return "redirect:/todolist";
     }
 
     @GetMapping("/deleteTask/{id}")
     public String deleteTask(@PathVariable("id") Long taskId) {
-        taskRepository.delete(taskId);
+        try {
+            taskRepository.delete(taskId);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        log.info("Task %s deleted.", taskId);
         return "redirect:/todolist";
     }
 
     @GetMapping("/setTaskStatus/{id}")
     public String setTaskStatus(@PathVariable("id") Long taskId, @RequestParam String status) {
-        taskService.changeTaskStatus(taskId, status);
+        try {
+            taskService.changeTaskStatus(taskId, status);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        log.info("Task %s updated.", taskId);
         return "redirect:/todolist";
     }
 }
