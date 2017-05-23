@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/>
+    <title>Login page</title>
+    <link rel="stylesheet" href="https://bootswatch.com/cerulean/bootstrap.css"/>
+</head>
+<body>
+    <div class="col-md-6">
+        <div class="col-md-8">
+            <form class="form-horizontal" th:action="@{/login}" method="POST">
+                <fieldset>
+                    <legend>Login</legend>
+                    <div class="form-group">
+                        <label for="name" class="col-lg-2 control-label">Username:</label>
+                        <div class="col-lg-9">
+                            <input type="text" id = "name" name="username" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pass" class="col-lg-2 control-label">Password:</label>
+                        <div class="col-lg-9">
+                            <input type="password" id="pass" name="password" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-lg-10 col-lg-offset-2">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

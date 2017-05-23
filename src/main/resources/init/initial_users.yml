@@ -1,0 +1,15 @@
+username: Julius Caesar
+password: AveCaesar
+role: ADMIN
+tasks:
+  - VENI
+  - VEDI
+  - VICI
+---
+username: V.I.Lenin
+password: october1917
+role: USER
+tasks:
+  - STUDY
+  - STUDY
+  - AND STUDY AGAIN

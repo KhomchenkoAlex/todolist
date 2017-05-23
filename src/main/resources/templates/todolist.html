@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Todolist</title>
+    <link href="https://bootswatch.com/cerulean/bootstrap.css" rel="stylesheet"/>
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row">
+        <nav class="navbar navbar-inverse navbar-static-top">
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="collapse navbar-collapse">
+                    <h1 class="nav-header" th:text="${user}">User Name</h1>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li th:if="${user==null}"><a th:href="@{/login}">Login</a></li>
+                        <li th:if="${user!=null}"><a th:href="@{/logout}">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-6">
+
+                <form class="form-horizontal label-floating" th:action="@{/addTask}" th:modelAttribute="taskDto"
+                      th:object="${taskDto}" method="post" id="submit">
+                    <fieldset>
+                        <legend>New task</legend>
+                        <div class="form-group">
+                            <label for="taskName" class="col-md-4 control-label">Task Name</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="taskName" placeholder="Name"
+                                       th:field="*{taskName}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="col-md-4 control-label">Description</label>
+                            <div class="col-md-8">
+                                <input type="text" class="form-control" id="description" placeholder="description"
+                                       th:field="*{description}"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="priority" class="col-md-4 control-label">Priority</label>
+                            <div class="col-md-8">
+                                <div class="control-group">
+                                    <select th:field="*{priority}">
+                                        <option th:value="LOW">LOW</option>
+                                        <option th:value="MEDIUM">MEDIUM</option>
+                                        <option th:value="HIGH">HIGH</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-8 col-md-offset-4">
+                                <button type="submit" class="btn btn-primary">Add</button>
+                                <button type="reset" class="btn btn-default">Cancel</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+
+        <div class="span10">
+            <div class="well">
+                <div class="page-header">
+                    <h1>My Todo list</h1>
+                </div>
+
+                <table class="table table-bordered table-striped">
+
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="task: ${tasks}">
+                        <td th:text="${task.id}"/>
+                        <td th:text="${task.taskName}"/>
+                        <td th:text="${task.description}"/>
+                        <td><span th:text="${task.priority}" class="label label-success"> </span></td>
+                        <td><span th:text="${task.status}" class="label label-success">  </span></td>
+                        <td>
+                            <div align="center">
+                                <a class="btn btn-mini btn-primary"
+                                   th:href="@{/setTaskStatus/{id}/(id=${task.id},status='IN_PROGRESS')}">
+                                    <i class="icon-edit icon-white"></i> Start</a>
+                                <a class="btn btn-mini btn-primary"
+                                   th:href="@{/setTaskStatus/{id}/(id=${task.id},status='COMPLETE')}">
+                                    <i class="icon-edit icon-white"></i> Complete</a>
+                                <a class="btn btn-mini btn-primary" th:href="@{/deleteTask/{id}(id=${task.id})}">
+                                    <i class="icon-edit icon-white"></i>DELETE</a>
+                            </div>
+                        </td>
+                    </tr>
+
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="2">
+                            <div align="center">Total = <span th:text="${total}" class="badge badge-inverse"></span>
+                            </div>
+                        </td>
+                        <td colspan="2">
+                            <div align="center">In Progress = <span th:text="${inProgress}" class="badge"></span></div>
+                        </td>
+                        <td colspan="2">
+                            <div align="center">Done = <span th:text="${done}" class="badge badge-success"></span></div>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
